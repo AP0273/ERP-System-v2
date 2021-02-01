@@ -44,7 +44,6 @@ public class Tree {
                }
 
         public void FindTree(int id,Node root, Stack trace) {
-
             if (root.product.getId() == id) {
                 System.out.println(root.product.getName() + " Quantidade em estoque " + root.product.getNumber_stock());
                 Application.menu();
@@ -53,13 +52,13 @@ public class Tree {
                 if (trace.peek().equals(root.pleft.product.getId())) {
                     trace.pop();
                     root = root.pleft;
-                    System.out.println("Moving Right");
+                    System.out.println("Going down on Right");
                     FindTree(id, root,trace);
                 }
                 if (trace.peek().equals(root.pright.product.getId())) {
                     trace.pop();
                     root = root.pright;
-                    System.out.println("Moving Left");
+                    System.out.println("Going down on Left");
                     FindTree(id, root, trace);
                 }
                 }catch(NullPointerException e){

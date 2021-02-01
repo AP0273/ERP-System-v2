@@ -44,7 +44,7 @@ public class Load {
 
                 loaded.add(new Products(Integer.parseInt(row[0].trim()), row[21],randomstockinsert(),total_amount));
                 total_amount=0;
-            /*    if(loaded.size() == 100) {
+            /*   if(loaded.size() == 100) {
                     break;
                 }*/
             }
