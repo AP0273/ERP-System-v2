@@ -1,9 +1,12 @@
+package app;
+
 import controller.ProductController;
 import model.Products;
 import repository.Load;
 import seed.Tree;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Application {
@@ -17,10 +20,6 @@ public class Application {
         data.load();
         controller = new ProductController(data.getProducts());
         tree.root = tree.germinateSeed(data.getProducts(), tree.root,0);
-        System.err.println(tree.root.product.getId() + "Root");
-        System.err.println(tree.root.pleft.product.getId());
-       System.err.println(tree.root.pleft.pleft.product.getId());
-        System.err.println(tree.root.pleft.pleft.pleft.product.getId());
         menu();
     }
     public static void menu() {
@@ -78,7 +77,12 @@ public class Application {
             case 4:
                 System.out.println("Digite o codigo do produto: ");
                 id = S.nextInt();
-                tree.FindTree(id, tree.root);
+                if(id >0) {
+                    tree.FindTree(id, tree.root, Tree.getTrace(id));
+                }else{
+                    System.err.println("Unicamente numeros positivos são validos");
+                    menu();
+                }
                 break;
         }
         menu();

@@ -1,57 +1,75 @@
 package seed;
 
+import app.Application;
 import model.Products;
 
 import java.util.ArrayList;
+import java.util.Stack;
+
 
 public class Tree {
     public Node root;
 
-
-
     public Node germinateSeed(ArrayList<Products> productslist, Node root, int i) {
 
-            // Base case for recursion
             if (i < productslist.size()) {
                 Node temp = new Node(productslist.get(i));
                 root = temp;
 
-                // insert left child
                root.pleft = germinateSeed(productslist, root.pleft,
                         2 * i + 1);
-                // insert right child
+
                 root.pright = germinateSeed(productslist, root.pright,
                         2 * i + 2);
             }
             return root;
         }
-        public void FindTree(int id,Node root) {
-        int row =  (int)Math.round((Math.sqrt(id)));
-            System.out.println(row + "row");
-        if(root == null) {
-            System.err.println("not found");
-            return;
-        }
-        if(root.product.getId() == id) {
-            System.out.println(root.product.getName());
-            return;
-        }else{
-            double ml = Math.round((double)id / root.pleft.product.getId());
-            double nl =root.pleft.product.getId() * ml;
-            if(nl +1 == id || nl +2 == id ) {
-             root= root.pleft;
-             System.out.println("R");
-             FindTree(id,root);
-         }
-            double mr = Math.round((double)id / root.pright.product.getId());
-            double nr = root.pright.product.getId() * mr;
-            if(nr +1 == id || nr +2 == id )  {
-                root= root.pright;
-                System.out.println("L");
-                FindTree(id,root);
-            }
-        }
-        }
+
+    public static int getParent(int childIndex)
+    {
+        int parentIndex = (int) Math.floor((double)(childIndex)/2);
+        return parentIndex;
     }
+
+        public static Stack getTrace (int id) {
+            Stack trace = new Stack();
+            trace.add(id);
+            while (id !=1) {
+            id = getParent(id);
+            if(id!=1) {
+                trace.add(id);
+            }
+            }
+            return trace;
+               }
+
+        public void FindTree(int id,Node root, Stack trace) {
+
+            if (root.product.getId() == id) {
+                System.out.println(root.product.getName() + " Quantidade em estoque " + root.product.getNumber_stock());
+                Application.menu();
+            } else {
+                try {
+                if (trace.peek().equals(root.pleft.product.getId())) {
+                    trace.pop();
+                    root = root.pleft;
+                    System.out.println("Moving Right");
+                    FindTree(id, root,trace);
+                }
+                if (trace.peek().equals(root.pright.product.getId())) {
+                    trace.pop();
+                    root = root.pright;
+                    System.out.println("Moving Left");
+                    FindTree(id, root, trace);
+                }
+                }catch(NullPointerException e){
+                    System.err.println("Not Found");
+                    Application.menu();
+                    }
+                }
+    }
+            }
+
+
 
 
